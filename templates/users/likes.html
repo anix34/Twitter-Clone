@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="warbler-hero" class="full-width"></div>
+<img src="{{ user.image_url }}" alt="Image for {{ user.username }}" id="profile-avatar">
+<div class="row full-width">
+  <div class="container">
+    <div class="row justify-content-end">
+      <div class="col-9">
+        <ul class="user-stats nav nav-pills">
+          <!-- User stats -->
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-3">
+    <!-- User information -->
+  </div>
+
+  <div class="col-sm-9">
+    <div class="row">
+      <ul class="list-group" id="messages">
+        {% for message in likes %}
+        <li class="list-group-item">
+          <!-- Message content -->
+          <!-- Like button with thumbs-up icon -->
+          <form action="/messages/{{ message.id }}/like" method="POST">
+            <button type="submit" id="thumbs-up-{{ message.id }}" class="thumbs-up-btn">
+              {% if message in g.user.likes %}
+              <!-- Thumbs-up icon -->
+              <i class="fas fa-thumbs-up"></i>
+              {% else %}
+              <!-- Outline thumbs-up icon -->
+              <i class="far fa-thumbs-up"></i>
+              {% endif %}
+            </button>
+          </form>
+          <!-- Unlike button with thumbs-down icon -->
+          <form action="/messages/{{ message.id }}/unlike" method="POST">
+            <button type="submit" id="thumbs-down-{{ message.id }}" class="thumbs-down-btn">
+              {% if message in g.user.likes %}
+              <!-- Thumbs-down icon -->
+              <i class="fas fa-thumbs-down"></i>
+              {% else %}
+              <!-- Outline thumbs-down icon -->
+              <i class="far fa-thumbs-down"></i>
+              {% endif %}
+            </button>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript to handle Thumbs Up and Thumbs Down icon clicks -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let thumbsUpButtons = document.querySelectorAll('.thumbs-up-btn');
+    let thumbsDownButtons = document.querySelectorAll('.thumbs-down-btn');
+
+    thumbsUpButtons.forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Toggle active class to make Thumbs Up icon visible
+            button.classList.toggle('active');
+        });
+    });
+
+    thumbsDownButtons.forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Toggle active class to make Thumbs Down icon visible
+            button.classList.toggle('active');
+        });
+    });
+});
+</script>
+
+{% endblock %}
